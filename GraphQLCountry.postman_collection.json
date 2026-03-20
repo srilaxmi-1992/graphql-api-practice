@@ -8,6 +8,45 @@
   "item": [
     {
       "name": "Fetch all countries",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();\r",
+              "const countries = json.data.countries;\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has no errors field\", function () {\r",
+              "    pm.expect(json.errors).to.be.undefined;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Countries array is not empty\", function () {\r",
+              "    pm.expect(countries.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each country has name, code, capital and currency\", function () {\r",
+              "    countries.forEach(country => {\r",
+              "        pm.expect(country.name).to.be.a(\"string\").and.not.empty;\r",
+              "        pm.expect(country.code).to.be.a(\"string\").and.not.empty;\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Country codes are 2 characters long\", function () {\r",
+              "    countries.forEach(country => {\r",
+              "        pm.expect(country.code.length).to.eql(2);\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -35,6 +74,52 @@
     },
     {
       "name": "Fetch specific country",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();\r",
+              "const country = json.data.country;\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has no errors field\", function () {\r",
+              "    pm.expect(json.errors).to.be.undefined;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Country data exists\", function () {\r",
+              "    pm.expect(country).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Country has at least one language\", function () {\r",
+              "    pm.expect(country.languages).to.be.an(\"array\");\r",
+              "    pm.expect(country.languages.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each language has name and code\", function () {\r",
+              "    country.languages.forEach(lang => {\r",
+              "        pm.expect(lang.name).to.be.a(\"string\").and.not.empty;\r",
+              "        pm.expect(lang.code).to.be.a(\"string\").and.not.empty;\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Continent name exists\", function () {\r",
+              "    pm.expect(country.continent.name).to.be.a(\"string\").and.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Country belongs to Asia continent\", function () {\r",
+              "    pm.expect(country.continent.name).to.eql(\"Asia\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -62,6 +147,56 @@
     },
     {
       "name": "Fetch all Continents",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();\r",
+              "const continents = json.data.continents;\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has no errors field\", function () {\r",
+              "    pm.expect(json.errors).to.be.undefined;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Continents array is not empty\", function () {\r",
+              "    pm.expect(continents.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Returns exactly 7 continents\", function () {\r",
+              "    pm.expect(continents.length).to.eql(7);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each continent has name and code\", function () {\r",
+              "    continents.forEach(continent => {\r",
+              "        pm.expect(continent.name).to.be.a(\"string\").and.not.empty;\r",
+              "        pm.expect(continent.code).to.be.a(\"string\").and.not.empty;\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Continent codes are 2 characters long\", function () {\r",
+              "    continents.forEach(continent => {\r",
+              "        pm.expect(continent.code.length).to.eql(2);\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Expected continents are present\", function () {\r",
+              "    const codes = continents.map(c => c.code);\r",
+              "    [\"AF\", \"AN\", \"AS\", \"EU\", \"NA\", \"OC\", \"SA\"].forEach(code => {\r",
+              "        pm.expect(codes).to.include(code);\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -89,6 +224,51 @@
     },
     {
       "name": "Fetch Countries in Asia",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();\r",
+              "const countries = json.data.countries;\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has no errors field\", function () {\r",
+              "    pm.expect(json.errors).to.be.undefined;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Countries array is not empty\", function () {\r",
+              "    pm.expect(countries.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each country has code and capital\", function () {\r",
+              "    countries.forEach(country => {\r",
+              "        pm.expect(country.code).to.be.a(\"string\").and.not.empty;\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Country codes are 2 characters long\", function () {\r",
+              "    countries.forEach(country => {\r",
+              "        pm.expect(country.code.length).to.eql(2);\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Known Asian countries are present\", function () {\r",
+              "    const codes = countries.map(c => c.code);\r",
+              "    [\"IN\", \"JP\", \"CN\", \"PK\"].forEach(code => {\r",
+              "        pm.expect(codes).to.include(code);\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -115,7 +295,59 @@
       "response": []
     },
     {
-      "name": "Fetch all lang",
+      "name": "Fetch all languages",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();\r",
+              "const languages = json.data.languages;\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has no errors field\", function () {\r",
+              "    pm.expect(json.errors).to.be.undefined;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Languages array is not empty\", function () {\r",
+              "    pm.expect(languages.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each language has code, name and native\", function () {\r",
+              "    languages.forEach(lang => {\r",
+              "        pm.expect(lang.code).to.be.a(\"string\").and.not.empty;\r",
+              "        pm.expect(lang.name).to.be.a(\"string\").and.not.empty;\r",
+              "        pm.expect(lang.native).to.be.a(\"string\").and.not.empty;\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"RTL field is a boolean\", function () {\r",
+              "    languages.forEach(lang => {\r",
+              "        pm.expect(lang.rtl).to.be.a(\"boolean\");\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Known languages are present\", function () {\r",
+              "    const codes = languages.map(l => l.code);\r",
+              "    [\"en\", \"hi\", \"ar\", \"zh\"].forEach(code => {\r",
+              "        pm.expect(codes).to.include(code);\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Arabic is marked as RTL\", function () {\r",
+              "    const arabic = languages.find(l => l.code === \"ar\");\r",
+              "    pm.expect(arabic.rtl).to.be.true;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -142,7 +374,56 @@
       "response": []
     },
     {
-      "name": "New Request",
+      "name": "GetCountriesByCodes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();\r",
+              "const countries = json.data.countries;\r",
+              "\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has no errors field\", function () {\r",
+              "    pm.expect(json.errors).to.be.undefined;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Returns exactly 2 countries\", function () {\r",
+              "    pm.expect(countries.length).to.eql(2);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Each country has name, code and capital\", function () {\r",
+              "    countries.forEach(country => {\r",
+              "        pm.expect(country.name).to.be.a(\"string\").and.not.empty;\r",
+              "        pm.expect(country.code).to.be.a(\"string\").and.not.empty;\r",
+              "        pm.expect(country.capital).to.be.a(\"string\").and.not.empty;\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Returned codes match requested codes IN and US\", function () {\r",
+              "    const codes = countries.map(c => c.code);\r",
+              "    pm.expect(codes).to.have.members([\"IN\", \"US\"]);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"India has correct capital\", function () {\r",
+              "    const india = countries.find(c => c.code === \"IN\");\r",
+              "    pm.expect(india.capital).to.eql(\"New Delhi\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"USA has correct capital\", function () {\r",
+              "    const usa = countries.find(c => c.code === \"US\");\r",
+              "    pm.expect(usa.capital).to.eql(\"Washington D.C.\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
