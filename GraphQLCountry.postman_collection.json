@@ -15,6 +15,8 @@
             "exec": [
               "const json = pm.response.json();\r",
               "const countries = json.data.countries;\r",
+              "// Save first country code for next request\r",
+              "pm.environment.set(\"firstCountryCode\", countries[0].code);\r",
               "\r",
               "pm.test(\"Status code is 200\", function () {\r",
               "    pm.response.to.have.status(200);\r",
@@ -45,6 +47,22 @@
             "packages": {},
             "requests": {}
           }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Generate dynamic country code randomly\r",
+              "const codes = [\"IN\", \"US\", \"JP\", \"CN\"];\r",
+              "const randomCode = codes[Math.floor(Math.random() * codes.length)];\r",
+              "pm.environment.set(\"countryCode\", randomCode);\r",
+              "// Timestamp for tracking\r",
+              "pm.environment.set(\"timestamp\", new Date().toISOString());"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
         }
       ],
       "request": {
@@ -58,15 +76,9 @@
           }
         },
         "url": {
-          "raw": "https://countries.trevorblades.com/",
-          "protocol": "https",
+          "raw": "{{baseUrl}}",
           "host": [
-            "countries",
-            "trevorblades",
-            "com"
-          ],
-          "path": [
-            ""
+            "{{baseUrl}}"
           ]
         }
       },
@@ -109,10 +121,7 @@
               "pm.test(\"Continent name exists\", function () {\r",
               "    pm.expect(country.continent.name).to.be.a(\"string\").and.not.empty;\r",
               "});\r",
-              "\r",
-              "pm.test(\"Country belongs to Asia continent\", function () {\r",
-              "    pm.expect(country.continent.name).to.eql(\"Asia\");\r",
-              "});"
+              ""
             ],
             "type": "text/javascript",
             "packages": {},
@@ -126,20 +135,14 @@
         "body": {
           "mode": "graphql",
           "graphql": {
-            "query": "query {\r\n  country(code: \"IN\") {\r\n    languages {\r\n        name\r\n        code\r\n    }\r\n    continent {\r\n        name\r\n    }\r\n  }\r\n}",
+            "query": "query {\r\n  country(code: \"{{firstCountryCode}}\") {\r\n    name\r\n    code\r\n    languages {\r\n        name\r\n        code\r\n    }\r\n    continent {\r\n        name\r\n        code\r\n    }\r\n  }\r\n}",
             "variables": ""
           }
         },
         "url": {
-          "raw": "https://countries.trevorblades.com/",
-          "protocol": "https",
+          "raw": "{{baseUrl}}",
           "host": [
-            "countries",
-            "trevorblades",
-            "com"
-          ],
-          "path": [
-            ""
+            "{{baseUrl}}"
           ]
         }
       },
@@ -208,15 +211,9 @@
           }
         },
         "url": {
-          "raw": "https://countries.trevorblades.com/",
-          "protocol": "https",
+          "raw": "{{baseUrl}}",
           "host": [
-            "countries",
-            "trevorblades",
-            "com"
-          ],
-          "path": [
-            ""
+            "{{baseUrl}}"
           ]
         }
       },
@@ -280,15 +277,9 @@
           }
         },
         "url": {
-          "raw": "https://countries.trevorblades.com/",
-          "protocol": "https",
+          "raw": "{{baseUrl}}",
           "host": [
-            "countries",
-            "trevorblades",
-            "com"
-          ],
-          "path": [
-            ""
+            "{{baseUrl}}"
           ]
         }
       },
@@ -359,15 +350,9 @@
           }
         },
         "url": {
-          "raw": "https://countries.trevorblades.com/",
-          "protocol": "https",
+          "raw": "{{baseUrl}}",
           "host": [
-            "countries",
-            "trevorblades",
-            "com"
-          ],
-          "path": [
-            ""
+            "{{baseUrl}}"
           ]
         }
       },
@@ -430,24 +415,47 @@
         "body": {
           "mode": "graphql",
           "graphql": {
-            "query": "query GetCountriesByCodes($code1 : String!, $code2 :String!){\r\n    countries(filter : { code : { in : [$code1, $code2]}})\r\n    {\r\n        name\r\n        code\r\n        capital\r\n    }\r\n}",
-            "variables": "{\r\n    \"code1\": \"IN\",\r\n    \"code2\": \"US\"\r\n}"
+            "query": "query GetCountriesByCodes($code1: String!, $code2: String!) {\r\n  countries(filter: { code: { in: [$code1, $code2] } }) {\r\n    name\r\n    code\r\n    capital\r\n  }\r\n}",
+            "variables": "{\r\n  \"code1\": \"{{code1}}\",\r\n  \"code2\": \"{{code2}}\"\r\n}"
           }
         },
         "url": {
-          "raw": "https://countries.trevorblades.com/",
-          "protocol": "https",
+          "raw": "{{baseUrl}}",
           "host": [
-            "countries",
-            "trevorblades",
-            "com"
-          ],
-          "path": [
-            ""
+            "{{baseUrl}}"
           ]
         }
       },
       "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "// Generate dynamic country code randomly\r",
+          "const codes = [\"IN\", \"US\", \"JP\", \"CN\"];\r",
+          "const randomCode = codes[Math.floor(Math.random() * codes.length)];\r",
+          "pm.environment.set(\"countryCode\", randomCode);\r",
+          "// Timestamp for tracking\r",
+          "pm.environment.set(\"timestamp\", new Date().toISOString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     }
   ]
 }
