@@ -33,7 +33,7 @@ A set of **GraphQL API** requests built with Postman, covering two public APIs.
 
 ---
 ## Project Structure
-
+```bash
 graphql-api-practice/
 │
 ├─ collections/
@@ -47,6 +47,7 @@ graphql-api-practice/
 |  └─ reports.html
 |
 └─ README.md
+```
 
 ## 🛠️ Setup and Running via Postman GUI
 
@@ -91,6 +92,7 @@ npm install -g newman-reporter-htmlextra
 
 newman run collections\GraphqlCharacterAPI.postman_collection.json -e environments\development.postman_environment.json -r htmlextra
 newman run collections\GraphQlCountry.postman_collection.json -e environments\development.postman_environment.json -r htmlextra
+```
 ---
 
 
