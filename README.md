@@ -41,6 +41,57 @@ A set of **GraphQL API** requests built with Postman, covering two public APIs.
 
 ---
 
+## 🛠️ Setup & Run via Newman (CLI)
+
+### Step 1 — Install Node.js
+Download and install Node.js from the official site:
+👉 https://nodejs.org/en/download
+
+Verify installation:
+```bash
+node -v
+npm -v
+```
+
+### Step 2 — Install Newman
+```bash
+npm install -g newman
+```
+
+Verify installation:
+```bash
+newman --version
+```
+
+### Step 3 — Run Collections
+
+**Run Rick & Morty Character API collection:**
+```bash
+newman run GraphqlCharacterAPI_postman_collection.json
+```
+
+**Run Countries GraphQL API collection:**
+```bash
+newman run GraphQLCountry_postman_collection.json
+```
+
+**Run with detailed HTML report (install reporter first):**
+```bash
+npm install -g newman-reporter-htmlextra
+
+newman run GraphqlCharacterAPI_postman_collection.json -r htmlextra
+newman run GraphQLCountry_postman_collection.json -r htmlextra
+```
+
+**Run with verbose output:**
+```bash
+newman run GraphqlCharacterAPI_postman_collection.json --verbose
+```
+
+---
+
+
+
 ## 🔗 API References
 
 - [Rick and Morty API](https://rickandmortyapi.com/documentation)
