@@ -32,16 +32,32 @@ A set of **GraphQL API** requests built with Postman, covering two public APIs.
 | Get Countries by Codes | Fetches multiple specific countries in one request using country codes |
 
 ---
+## Project Structure
 
-## 🛠️ Setup
+graphql-api-practice/
+│
+├─ collections/
+│ ├─ GraphqlCharacterAPI_postman_collection.json
+│ └─ GraphQLCountry_postman_collection.json
+│
+├─ environments/
+│ └─ development.postman_environment.json
+│
+|__ newman/
+|  └─ reports.html
+|
+└─ README.md
 
-1. Install [Postman](https://www.postman.com/downloads/)
-2. Import `GraphqlCharacterAPI_postman_collection.json` and `GraphQLCountry_postman_collection.json`
-3. Select a request and hit **Send** — no authentication needed
+## 🛠️ Setup and Running via Postman GUI
+
+1. Install [Postman](https://www.postman.com/downloads/)  
+2. Import collections from `collections/` folder  
+3. Import environment from `environments/development.postman_environment.json`  
+4. Select a collection → select a request → hit **Send**
 
 ---
 
-## 🛠️ Setup & Run via Newman (CLI)
+## 🚀 Running via Newman (CLI)
 
 ### Step 1 — Install Node.js
 Download and install Node.js from the official site:
@@ -63,33 +79,19 @@ Verify installation:
 newman --version
 ```
 
-### Step 3 — Run Collections
+### Step 3 - Install HTML Reporter
 
-**Run Rick & Morty Character API collection:**
-```bash
-newman run GraphqlCharacterAPI_postman_collection.json
-```
-
-**Run Countries GraphQL API collection:**
-```bash
-newman run GraphQLCountry_postman_collection.json
-```
-
-**Run with detailed HTML report (install reporter first):**
 ```bash
 npm install -g newman-reporter-htmlextra
-
-newman run GraphqlCharacterAPI_postman_collection.json -r htmlextra
-newman run GraphQLCountry_postman_collection.json -r htmlextra
 ```
 
-**Run with verbose output:**
+### Run the collection
+
 ```bash
-newman run GraphqlCharacterAPI_postman_collection.json --verbose
-```
 
+newman run collections\GraphqlCharacterAPI.postman_collection.json -e environments\development.postman_environment.json -r htmlextra
+newman run collections\GraphQlCountry.postman_collection.json -e environments\development.postman_environment.json -r htmlextra
 ---
-
 
 
 ## 🔗 API References
