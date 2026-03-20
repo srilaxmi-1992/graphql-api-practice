@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "f280a529-a857-4842-b987-917d2926a120",
-    "name": "Graphql - CharacterAPI",
+    "name": "CharacterAPI",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "9172638"
   },
@@ -19,7 +19,7 @@
               "});\r",
               "\r",
               "pm.test(\"Response has no errors field\", function () {\r",
-              "    pm.expect(json.data).to.not.include(\"errors\");\r",
+              "    pm.expect(json.errors).to.be.undefined;\r",
               "});\r",
               "\r",
               "pm.test(\"results array is not empty\", function () {\r",
